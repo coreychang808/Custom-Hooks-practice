@@ -1,30 +1,13 @@
-// import { useState } from 'react';
-// import io from 'socket.io-client';
-// import Q from '@nmq/q/client';
+const io = require('socket.io-client');
+const socket = io.connect('http://localhost:3000');
 
-// function useSockets(){
-//     // Connect outside of the render cycle ...
-//     const queue = new Q('deeds');
-//     const socket = io.connect('http://localhost:3000');
+const useSocket = () => {
 
-//     function useEffect( (event) => {
+    const  subscribe = (event, callback) => socket.on(event, callback);
 
-//         queue.subscribe('work', message => {
-//           setQueueMessage(message);
-//         });
-    
-//         socket.on('incoming', message => {
-//           setSocketMessage(message);
-//         });
-    
-//       }, []);
+    const publish =(event, payload) => socket.emit(event, payload);
 
-//     function stuff (values){
-//         Q.publish('deeds', 'work', values);
-//         socket.emit('words', values);
-//       }
-//       return [ stuff, useEffect];
-// }
+    return[publish, subscribe];
+};
 
-// export default useSockets;
-
+export default useSocket;
